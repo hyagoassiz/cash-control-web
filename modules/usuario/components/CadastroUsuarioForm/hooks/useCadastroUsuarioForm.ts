@@ -2,7 +2,6 @@
 
 import { RegisterPayload, registerUser } from "@/lib/api/registerService";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import {
   useForm,
   useWatch,
@@ -28,7 +27,6 @@ export interface UseCadastroUsuarioFormResult {
   control: Control<RegisterFormValues>;
   handleSubmit: UseFormHandleSubmit<RegisterFormValues>;
   isSubmitting: boolean;
-  success: string | null;
   onSubmit: (data: RegisterFormValues) => Promise<void>;
   nameRules: RegisterFieldRules<"name">;
   emailRules: RegisterFieldRules<"email">;
@@ -38,8 +36,6 @@ export interface UseCadastroUsuarioFormResult {
 
 export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
   const router = useRouter();
-
-  const [success, setSuccess] = useState<string | null>(null);
 
   const {
     control,
@@ -59,7 +55,7 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
   const password = useWatch({ control, name: "password", defaultValue: "" });
 
   const nameRules: RegisterFieldRules<"name"> = {
-    required: "Nome completo é obrigatório",
+    required: "Nome é obrigatório",
     validate: {
       noEdges: (value) =>
         value === value.trim() || "Não pode ter espaço no começo ou fim",
@@ -86,7 +82,7 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
   };
 
   const confirmPasswordRules: RegisterFieldRules<"confirmPassword"> = {
-    required: "Confirmação é obrigatória",
+    required: "Confirmar Senha é obrigatória",
     validate: {
       matches: (value) => value === password || "As senhas não conferem",
     },
@@ -100,18 +96,15 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
       password: data.password,
     };
 
-    setSuccess(null);
     const response = await registerUser(payload);
     reset();
-    setSuccess(response.message);
-    window.setTimeout(() => router.push("/login"), 1600);
+    window.setTimeout(() => router.push("/login"), 3000);
   }
 
   return {
     control,
     handleSubmit,
     isSubmitting,
-    success,
     onSubmit,
     nameRules,
     emailRules,

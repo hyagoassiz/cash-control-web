@@ -1,4 +1,3 @@
-import LayoutPublico from "@/app/(publico)/layout";
 import { CadastroUsuarioForm } from "@/modules/usuario/components/CadastroUsuarioForm";
 
 export const metadata = {
@@ -6,9 +5,5 @@ export const metadata = {
 };
 
 export default function CadastroPage() {
-  return (
-    <LayoutPublico>
-      <CadastroUsuarioForm />
-    </LayoutPublico>
-  );
+  return <CadastroUsuarioForm />;
 }
