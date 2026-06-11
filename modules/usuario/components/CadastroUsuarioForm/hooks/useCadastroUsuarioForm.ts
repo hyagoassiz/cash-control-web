@@ -1,5 +1,6 @@
 "use client";
 
+import { RegisterPayload, registerUser } from "@/lib/api/registerService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -10,7 +11,6 @@ import {
   type RegisterOptions,
   type UseFormHandleSubmit,
 } from "react-hook-form";
-import { registerUser, type RegisterPayload } from "../lib/api/registerService";
 
 export type RegisterFormValues = {
   name: string;
@@ -24,7 +24,7 @@ export type RegisterFieldName = FieldPath<RegisterFormValues>;
 export type RegisterFieldRules<TName extends RegisterFieldName> =
   RegisterOptions<RegisterFormValues, TName>;
 
-export interface UseRegisterFormResult {
+export interface UseCadastroUsuarioFormResult {
   control: Control<RegisterFormValues>;
   handleSubmit: UseFormHandleSubmit<RegisterFormValues>;
   isSubmitting: boolean;
@@ -36,7 +36,7 @@ export interface UseRegisterFormResult {
   confirmPasswordRules: RegisterFieldRules<"confirmPassword">;
 }
 
-export function useRegisterForm(): UseRegisterFormResult {
+export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
   const router = useRouter();
 
   const [success, setSuccess] = useState<string | null>(null);
@@ -82,15 +82,12 @@ export function useRegisterForm(): UseRegisterFormResult {
   const passwordRules: RegisterFieldRules<"password"> = {
     required: "Senha é obrigatória",
     minLength: { value: 6, message: "Mínimo 6 caracteres" },
-    validate: {
-      noSpaces: (value) => !/\s/.test(value) || "Senha não pode conter espaços",
-    },
+    maxLength: { value: 60, message: "Máximo 60 caracteres" },
   };
 
   const confirmPasswordRules: RegisterFieldRules<"confirmPassword"> = {
     required: "Confirmação é obrigatória",
     validate: {
-      noSpaces: (value) => !/\s/.test(value) || "Senha não pode conter espaços",
       matches: (value) => value === password || "As senhas não conferem",
     },
   };

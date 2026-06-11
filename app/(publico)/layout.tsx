@@ -1,12 +1,10 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import RegisterForm from "../../components/RegisterForm";
+import { Box, Typography } from "@mui/material";
 
-export const metadata = {
-  title: "Criar conta | Cash Control",
-};
-
-export default function RegisterPage() {
+export default function LayoutPublico({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <main>
       <Box
@@ -30,7 +28,7 @@ export default function RegisterPage() {
             </Typography>
           </Box>
 
-          <RegisterForm />
+          {children}
         </Box>
       </Box>
     </main>
