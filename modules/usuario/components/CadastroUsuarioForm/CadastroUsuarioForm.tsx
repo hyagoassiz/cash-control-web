@@ -5,7 +5,6 @@ import { ControlledPasswordField } from "@/components/ControlledPasswordField";
 import { ControlledTextField } from "@/components/ControlledTextField";
 import { useCadastroUsuarioForm } from "@/modules/usuario/components/CadastroUsuarioForm/hooks/useCadastroUsuarioForm";
 import { LoadingButton } from "@mui/lab";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
@@ -13,14 +12,12 @@ import { type ReactElement } from "react";
 
 export function CadastroUsuarioForm(): ReactElement {
   const {
-    control,
-    handleSubmit,
-    isSubmitting,
-    onSubmit,
-    nameRules,
+    cadastroUsuarioForm,
+    confirmarSenhaRules,
     emailRules,
-    passwordRules,
-    confirmPasswordRules,
+    nomeRules,
+    senhaRules,
+    criarUsuario,
   } = useCadastroUsuarioForm();
 
   return (
@@ -28,58 +25,57 @@ export function CadastroUsuarioForm(): ReactElement {
       titulo="Criar conta"
       subtitulo="Use um e-mail válido e uma senha segura para começar a controlar o seu dinheiro."
     >
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Stack spacing={2.5}>
-          <ControlledTextField
-            name="name"
-            control={control}
-            rules={nameRules}
-            label="Nome"
-            placeholder="Seu nome"
-            autoComplete="name"
-          />
+      <Stack spacing={2.5}>
+        <ControlledTextField
+          name="nome"
+          control={cadastroUsuarioForm.control}
+          rules={nomeRules}
+          label="Nome"
+          placeholder="Seu nome"
+          autoComplete="name"
+        />
 
-          <ControlledEmailField
-            name="email"
-            control={control}
-            rules={emailRules}
-            label="E-mail"
-            placeholder="seu@email.com"
-            autoComplete="email"
-          />
+        <ControlledEmailField
+          name="email"
+          control={cadastroUsuarioForm.control}
+          rules={emailRules}
+          label="E-mail"
+          placeholder="seu@email.com"
+          autoComplete="email"
+        />
 
-          <ControlledPasswordField
-            name="password"
-            control={control}
-            rules={passwordRules}
-            label="Senha"
-            placeholder="Senha"
-            autoComplete="password"
-          />
+        <ControlledPasswordField
+          name="senha"
+          control={cadastroUsuarioForm.control}
+          rules={senhaRules}
+          label="Senha"
+          placeholder="Senha"
+          autoComplete="password"
+        />
 
-          <ControlledPasswordField
-            name="confirmPassword"
-            control={control}
-            rules={confirmPasswordRules}
-            label="Confirmar Senha"
-            placeholder="Repita a senha"
-            autoComplete="new-password"
-          />
+        <ControlledPasswordField
+          name="confirmarSenha"
+          control={cadastroUsuarioForm.control}
+          rules={confirmarSenhaRules}
+          label="Confirmar Senha"
+          placeholder="Repita a senha"
+          autoComplete="new-password"
+        />
 
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
-            size="large"
-            disabled={isSubmitting}
-            loading={isSubmitting}
-            loadingPosition="center"
-          >
-            Criar Conta
-          </LoadingButton>
-        </Stack>
-      </Box>
+        <LoadingButton
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
+          size="large"
+          disabled={cadastroUsuarioForm.formState.isSubmitting}
+          loading={cadastroUsuarioForm.formState.isSubmitting}
+          loadingPosition="center"
+          onClick={criarUsuario}
+        >
+          Criar Conta
+        </LoadingButton>
+      </Stack>
 
       <Typography
         variant="body2"

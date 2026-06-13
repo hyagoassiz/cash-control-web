@@ -1,60 +1,73 @@
 "use client";
 
-import { RegisterPayload, registerUser } from "@/lib/api/registerService";
+import {
+  UsuarioRequestDTO,
+  UsuarioResponseDTO,
+} from "@/modules/usuario/dto/usuarioDto";
+import { postUsuarios } from "@/modules/usuario/services/usuarioService";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
   useForm,
+  UseFormReturn,
   useWatch,
-  type Control,
   type FieldPath,
   type RegisterOptions,
-  type UseFormHandleSubmit,
 } from "react-hook-form";
 
-export type RegisterFormValues = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+type CadastroUsuarioForm = UsuarioRequestDTO & {
+  confirmarSenha: string;
 };
 
-export type RegisterFieldName = FieldPath<RegisterFormValues>;
+type RegisterFieldName = FieldPath<CadastroUsuarioForm>;
 
-export type RegisterFieldRules<TName extends RegisterFieldName> =
-  RegisterOptions<RegisterFormValues, TName>;
+type RegisterFieldRules<TName extends RegisterFieldName> = RegisterOptions<
+  CadastroUsuarioForm,
+  TName
+>;
 
-export interface UseCadastroUsuarioFormResult {
-  control: Control<RegisterFormValues>;
-  handleSubmit: UseFormHandleSubmit<RegisterFormValues>;
-  isSubmitting: boolean;
-  onSubmit: (data: RegisterFormValues) => Promise<void>;
-  nameRules: RegisterFieldRules<"name">;
+interface UseCadastroUsuarioFormReturn {
+  cadastroUsuarioForm: UseFormReturn<CadastroUsuarioForm>;
+  confirmarSenhaRules: RegisterFieldRules<"confirmarSenha">;
   emailRules: RegisterFieldRules<"email">;
-  passwordRules: RegisterFieldRules<"password">;
-  confirmPasswordRules: RegisterFieldRules<"confirmPassword">;
+  nomeRules: RegisterFieldRules<"nome">;
+  senhaRules: RegisterFieldRules<"senha">;
+  criarUsuario(): void;
 }
 
-export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
+export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
   const router = useRouter();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm<RegisterFormValues>({
+  const cadastroUsuarioForm = useForm<CadastroUsuarioForm>({
     mode: "onTouched",
     defaultValues: {
-      name: "",
+      nome: "",
       email: "",
-      password: "",
-      confirmPassword: "",
+      senha: "",
+      confirmarSenha: "",
     },
   });
 
-  const password = useWatch({ control, name: "password", defaultValue: "" });
+  const mutationPostUsuarios = useMutation<
+    UsuarioResponseDTO,
+    Error,
+    UsuarioRequestDTO
+  >({
+    mutationFn: postUsuarios,
+    onSuccess: () => {
+      cadastroUsuarioForm.reset();
 
-  const nameRules: RegisterFieldRules<"name"> = {
+      window.setTimeout(() => router.push("/login"), 1000);
+    },
+  });
+
+  const senha = useWatch({
+    control: cadastroUsuarioForm.control,
+    name: "senha",
+    defaultValue: "",
+  });
+
+  const nomeRules: RegisterFieldRules<"nome"> = {
     required: "Nome é obrigatório",
     validate: {
       noEdges: (value) =>
@@ -75,40 +88,37 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormResult {
     },
   };
 
-  const passwordRules: RegisterFieldRules<"password"> = {
+  const senhaRules: RegisterFieldRules<"senha"> = {
     required: "Senha é obrigatória",
-    minLength: { value: 6, message: "Mínimo 6 caracteres" },
+    minLength: { value: 8, message: "Mínimo 8 caracteres" },
     maxLength: { value: 60, message: "Máximo 60 caracteres" },
   };
 
-  const confirmPasswordRules: RegisterFieldRules<"confirmPassword"> = {
+  const confirmarSenhaRules: RegisterFieldRules<"confirmarSenha"> = {
     required: "Confirmar Senha é obrigatória",
     validate: {
-      matches: (value) => value === password || "As senhas não conferem",
+      matches: (value) => value === senha || "As senhas não conferem",
     },
   };
 
-  async function onSubmit(data: RegisterFormValues): Promise<void> {
-    const normalizedName = data.name.trim();
-    const payload: RegisterPayload = {
-      name: normalizedName,
-      email: data.email.trim().toLowerCase(),
-      password: data.password,
-    };
+  function criarUsuario(): void {
+    cadastroUsuarioForm.handleSubmit(async ({ nome, email, senha }) => {
+      const payload: UsuarioRequestDTO = {
+        nome,
+        email,
+        senha,
+      };
 
-    const response = await registerUser(payload);
-    reset();
-    window.setTimeout(() => router.push("/login"), 3000);
+      mutationPostUsuarios.mutate(payload);
+    })();
   }
 
   return {
-    control,
-    handleSubmit,
-    isSubmitting,
-    onSubmit,
-    nameRules,
+    cadastroUsuarioForm,
+    confirmarSenhaRules,
     emailRules,
-    passwordRules,
-    confirmPasswordRules,
+    nomeRules,
+    senhaRules,
+    criarUsuario,
   };
 }
