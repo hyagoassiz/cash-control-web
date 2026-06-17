@@ -1,5 +1,6 @@
 "use client";
 
+import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
 import {
   UsuarioRequestDTO,
   UsuarioResponseDTO,
@@ -50,7 +51,7 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
 
   const mutationPostUsuarios = useMutation<
     UsuarioResponseDTO,
-    Error,
+    ApiErrorResponse,
     UsuarioRequestDTO
   >({
     mutationFn: postUsuarios,
@@ -58,6 +59,13 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
       cadastroUsuarioForm.reset();
 
       window.setTimeout(() => router.push("/login"), 1000);
+    },
+    onError: (error) => {
+      error.errors.forEach((item) => {
+        cadastroUsuarioForm.setError(item.field as keyof CadastroUsuarioForm, {
+          message: item.message,
+        });
+      });
     },
   });
 
@@ -82,16 +90,11 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
     validate: {
       noEdges: (value) =>
         value === value.trim() || "Não pode ter espaço no começo ou fim",
-      validFormat: (value) =>
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
-        "Formato de e-mail inválido",
     },
   };
 
   const senhaRules: RegisterFieldRules<"senha"> = {
     required: "Senha é obrigatória",
-    minLength: { value: 8, message: "Mínimo 8 caracteres" },
-    maxLength: { value: 60, message: "Máximo 60 caracteres" },
   };
 
   const confirmarSenhaRules: RegisterFieldRules<"confirmarSenha"> = {

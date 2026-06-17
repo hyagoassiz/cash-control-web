@@ -1,5 +1,7 @@
 // lib/api/apiClient.ts
 
+import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function apiClient<T>(
@@ -14,11 +16,10 @@ export async function apiClient<T>(
     },
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as T | ApiErrorResponse;
 
   if (!response.ok) {
-    console.error(JSON.stringify(data, null, 2));
-    throw new Error(data.message ?? "Erro na requisição");
+    throw data;
   }
 
   return data as T;
