@@ -5,7 +5,7 @@ import {
   UsuarioRequestDTO,
   UsuarioResponseDTO,
 } from "@/modules/usuario/dto/usuarioDto";
-import { postUsuarios } from "@/modules/usuario/services/usuarioService";
+import { postUsuario } from "@/modules/usuario/services/usuarioService";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
@@ -49,12 +49,12 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
     },
   });
 
-  const mutationPostUsuarios = useMutation<
+  const mutationPostUsuario = useMutation<
     UsuarioResponseDTO,
     ApiErrorResponse,
     UsuarioRequestDTO
   >({
-    mutationFn: postUsuarios,
+    mutationFn: postUsuario,
     onSuccess: () => {
       cadastroUsuarioForm.reset();
 
@@ -112,7 +112,7 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
         senha,
       };
 
-      mutationPostUsuarios.mutate(payload);
+      mutationPostUsuario.mutate(payload);
     })();
   }
 
