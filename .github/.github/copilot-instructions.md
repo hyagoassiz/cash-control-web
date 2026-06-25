@@ -1,90 +1,53 @@
-# TypeScript
+# Objetivo
 
-- Nunca utilizar `any`.
-- Utilizar tipos explícitos em funções públicas.
-- Toda função deve possuir tipo de retorno explícito.
-- Não depender da inferência de tipo para retorno de funções.
-- Preferir `interface` para DTOs e entidades.
-- Evitar type assertions desnecessários.
-- Não criar tipos duplicados.
-- Evitar valores mágicos no código.
+Gere código consistente com o restante do projeto.
 
-# React
+Sempre priorize:
 
-- Declarar componentes utilizando `function`.
-- Componentes devem ser responsáveis apenas pela interface e interação do usuário.
-- Evitar lógica de negócio dentro de componentes.
-- Extrair regras de negócio para hooks customizados.
-- Componentes devem permanecer enxutos e focados na renderização.
-- Evitar componentes excessivamente grandes.
-- Antes de criar um componente, verificar se ele pode ser reutilizado.
+1. Simplicidade.
+2. Legibilidade.
+3. Reutilização.
+4. Consistência com os padrões existentes.
 
-# Next.js
+Nunca implemente soluções mais complexas do que o necessário para atender ao requisito.
 
-- Utilizar App Router.
-- Utilizar Server Components por padrão.
-- Utilizar `"use client"` somente quando necessário.
-- Buscar dados no servidor sempre que não houver necessidade de interação do usuário.
-- Utilizar Client Components apenas quando houver estado, eventos ou hooks do React.
-- Não utilizar Pages Router.
+---
 
-# React Hook Form
+# Antes de implementar
 
-- Utilizar React Hook Form para formulários.
-- Sempre que um componente Material UI for integrado ao React Hook Form, utilizar `Controller`.
-- Utilizar `register` apenas para elementos HTML nativos.
-- TextField, Select, Autocomplete, Checkbox, RadioGroup e Switch devem ser controlados por `Controller`.
+Antes de escrever qualquer código:
 
-# Material UI
+- Analise como funcionalidades semelhantes foram implementadas no projeto.
+- Reutilize componentes, hooks, services, tipos e utilitários existentes sempre que possível.
+- Mantenha consistência com a nomenclatura e os padrões já existentes no projeto.
+- Não crie novos arquivos se a alteração puder ser realizada mantendo a organização do arquivo existente.
+- Prefira evoluir arquivos existentes antes de criar novos.
+- Não crie componentes, hooks, funções ou abstrações sem necessidade.
+- Não altere código não relacionado à solicitação.
+- Caso exista dúvida sobre alguma regra de negócio, peça esclarecimentos antes de implementar.
 
-- Utilizar Material UI como biblioteca de componentes.
-- Preferir o prop `sx` para estilização.
-- Não utilizar CSS Modules.
-- Evitar estilos inline quando houver reutilização.
-- Componentes compartilhados devem ser reutilizados sempre que possível.
-
-# React Query
-
-- Utilizar React Query para integração com APIs.
-- Componentes não devem utilizar `useQuery` ou `useMutation` diretamente.
-- Toda integração com React Query deve ser encapsulada em hooks customizados.
-- Hooks devem ser responsáveis por orquestrar chamadas de API e regras de negócio relacionadas.
-
-# Services
-
-- Services devem conter apenas chamadas HTTP.
-- Services não devem conter regras de negócio.
-- Services não devem manipular estado da aplicação.
-- Services não devem acessar localStorage, sessionStorage ou cookies diretamente.
-- Cada módulo deve possuir seus próprios services quando necessário.
+---
 
 # Arquitetura
 
-- Seguir a estrutura de pastas existente.
-- Não criar arquivos desnecessários.
-- Não criar abstrações sem necessidade.
-- Não criar pastas vazias.
-- Organizar funcionalidades por domínio de negócio.
-- Criar novos módulos apenas quando houver necessidade real.
-- Antes de criar uma função, verificar se ela pode ser reutilizada.
-- Funções reutilizáveis devem ser extraídas para uma pasta apropriada.
-- Evitar acoplamento entre módulos.
-- Priorizar soluções simples.
-- Evitar abstrações prematuras.
+- Siga a estrutura de pastas existente.
+- Organize funcionalidades por domínio de negócio.
+- Evite acoplamento entre módulos.
+- Crie novos módulos apenas quando houver necessidade real.
+- Crie apenas as pastas necessárias para cada módulo.
+- Não crie pastas vazias.
+- Não antecipe estruturas para funcionalidades futuras.
+- Extraia código reutilizável apenas quando houver benefício claro de reutilização ou legibilidade.
+- Priorize evoluir implementações existentes antes de criar novas abstrações.
+
+---
 
 # Estrutura do Projeto
 
-- Utilizar organização por domínio de negócio.
-- Utilizar a pasta `modules` para funcionalidades do sistema.
-- Componentes compartilhados devem ficar em `components`.
-- Integrações globais devem ficar em `services`.
-- Utilitários globais devem ficar em `lib`.
-
-Exemplo:
+Utilize a seguinte organização:
 
 ```txt
 src
-
 ├── app
 ├── modules
 ├── components
@@ -92,93 +55,202 @@ src
 └── lib
 ```
 
-# Módulos
+Regras:
 
-- Cada módulo deve conter apenas as pastas necessárias.
-- Não criar estruturas antecipadamente.
+- Funcionalidades devem ficar em `modules`.
+- Componentes compartilhados devem ficar em `components`.
+- Integrações globais devem ficar em `services`.
+- Utilitários globais devem ficar em `lib`.
 
-Exemplo:
+Exemplo de módulo:
 
 ```txt
 modules
-
-└── usuario
+└── users
     ├── components
     ├── hooks
     ├── services
     └── types
 ```
 
+---
+
+# TypeScript
+
+- Nunca utilize `any`.
+- Utilize tipos explícitos em funções públicas.
+- Declare explicitamente o tipo de retorno de toda função.
+- Não dependa da inferência de retorno.
+- Prefira `interface` para DTOs e entidades.
+- Evite type assertions desnecessários.
+- Não duplique tipos existentes.
+- Evite valores mágicos.
+
+---
+
+# React
+
+- Declare componentes utilizando `function`.
+- Mantenha componentes focados em renderização e interação do usuário.
+- Não coloque regras de negócio dentro de componentes.
+- Extraia regras de negócio para hooks customizados.
+- Mantenha componentes pequenos e coesos.
+- Reutilize componentes existentes antes de criar novos.
+- Evite criar componentes apenas para extrair pequenos trechos de JSX que não serão reutilizados.
+
+---
+
+# Next.js
+
+- Utilize App Router.
+- Utilize Server Components por padrão.
+- Utilize `"use client"` apenas quando necessário.
+- Busque dados no servidor sempre que possível.
+- Utilize Client Components apenas quando houver estado, eventos ou hooks do React.
+- Não utilize Pages Router.
+
+---
+
+# React Hook Form
+
+- Utilize React Hook Form em formulários.
+- Utilize `Controller` para componentes do Material UI.
+- Utilize `register` apenas para elementos HTML nativos.
+- Controle `TextField`, `Select`, `Autocomplete`, `Checkbox`, `RadioGroup` e `Switch` utilizando `Controller`.
+
+---
+
+# Material UI
+
+- Utilize Material UI como biblioteca de componentes.
+- Prefira o prop `sx` para estilização.
+- Não utilize CSS Modules.
+- Evite estilos duplicados.
+- Reutilize componentes compartilhados sempre que possível.
+
+---
+
+# React Query
+
+- Utilize React Query para integração com APIs.
+- Nunca utilize `useQuery` ou `useMutation` diretamente em componentes.
+- Encapsule React Query em hooks customizados.
+- Centralize chamadas de API e regras relacionadas nesses hooks.
+
+---
+
 # Hooks
 
-- Hooks customizados devem possuir tipagem explícita de retorno.
-- Centralizar regras de negócio em hooks customizados.
-- Centralizar integrações com APIs em hooks customizados.
-- Evitar lógica duplicada entre hooks.
+- Declare explicitamente o tipo de retorno dos hooks.
+- Centralize regras de negócio.
+- Centralize integrações com APIs.
+- Evite duplicação de lógica entre hooks.
 
-# Nomenclatura
+---
 
-- Utilizar nomes em português para regras de negócio.
-- Utilizar nomes em português para componentes.
-- Utilizar nomes em português para hooks customizados.
-- Utilizar nomes em português para services de domínio.
-- Utilizar nomes em português para variáveis.
-- Utilizar nomes em português para arquivos relacionados ao domínio.
-- Utilizar nomes em português para módulos.
-- Utilizar nomes em português para rotas da aplicação.
-- Utilizar nomes claros e descritivos.
-- Evitar abreviações desnecessárias.
-- Utilizar inglês apenas para termos técnicos consolidados pelo ecossistema.
+# Services
 
-Exemplos:
+- Utilize services apenas para chamadas HTTP.
+- Não coloque regras de negócio em services.
+- Não manipule estado da aplicação em services.
+- Não acesse localStorage, sessionStorage ou cookies em services.
+- Cada módulo pode possuir seus próprios services quando necessário.
 
-Correto:
-
-- UsuarioService
-- CadastroUsuarioForm
-- useCadastrarUsuario
-- cadastrarUsuario
-- /cadastro
-- /entrar
-- /transacoes
-
-Incorreto:
-
-- UserService
-- SignUpForm
-- useSignUp
-- createUser
-- /signup
-- /login
+---
 
 # Funções
 
-- Declarar funções utilizando a palavra-chave `function`.
-- Evitar funções declaradas com `const` e arrow function quando não houver necessidade.
-- Toda função deve possuir tipo de retorno explícito.
+- Declare funções utilizando `function`.
+- Utilize arrow functions apenas quando forem exigidas pela API utilizada ou quando houver ganho claro de legibilidade.
+- Declare explicitamente o tipo de retorno.
 
 Exemplo correto:
 
 ```ts
-function calcularTotal(items: Item[]): number {
-  return items.reduce((acc, item) => acc + item.valor, 0);
+function calculateTotal(items: Item[]): number {
+  return items.reduce((total, item) => total + item.value, 0);
 }
 ```
 
 Exemplo incorreto:
 
 ```ts
-const calcularTotal = (items: Item[]) => {
-  return items.reduce((acc, item) => acc + item.valor, 0);
+const calculateTotal = (items: Item[]) => {
+  return items.reduce((total, item) => total + item.value, 0);
 };
 ```
 
+---
+
+# Nomenclatura
+
+Utilize inglês para todos os identificadores do código.
+
+Inclui:
+
+- módulos;
+
+- componentes;
+
+- hooks;
+
+- services;
+
+- funções;
+
+- variáveis;
+
+- interfaces;
+
+- tipos;
+
+- enums;
+
+- arquivos;
+
+- pastas;
+
+- rotas.
+
+- Não misture português e inglês no mesmo identificador.
+
+- Utilize nomes claros, descritivos e consistentes.
+
+- Evite abreviações desnecessárias.
+
+- Sempre que possível, utilize a nomenclatura adotada pelo ecossistema React, TypeScript, Next.js e Material UI.
+
+Os textos exibidos ao usuário devem utilizar o idioma da aplicação.
+
+Exemplos corretos:
+
+- UserService
+- CreateUserForm
+- useCreateUser
+- createUser
+- transactionType
+- accountBalance
+- /users
+
+Exemplos incorretos:
+
+- UsuarioService
+- CadastroUsuarioForm
+- useCadastrarUsuario
+- cadastrarUsuario
+- tipoMovimentacao
+- saldoConta
+- /usuarios
+- userSelecionado
+- transactionAtual
+
+---
+
 # Cash Control
 
-- Priorizar simplicidade.
-- Não criar módulos antecipadamente.
-- Não criar componentes antecipadamente.
-- Não criar abstrações antecipadamente.
-- Implementar apenas o necessário para a funcionalidade atual.
-- Evoluir a arquitetura conforme o crescimento do sistema.
-- Priorizar legibilidade e manutenção do código.
+Este projeto segue uma arquitetura incremental.
+
+- Implemente apenas o necessário para atender ao requisito atual.
+- Não antecipe funcionalidades.
+- Evolua componentes, módulos e abstrações apenas quando houver necessidade real.
+- Sempre priorize simplicidade, legibilidade e facilidade de manutenção.
