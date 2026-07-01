@@ -1,11 +1,8 @@
 "use client";
 
 import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
-import {
-  UsuarioRequestDTO,
-  UsuarioResponseDTO,
-} from "@/modules/usuario/dto/usuarioDto";
-import { postUsuario } from "@/modules/usuario/services/usuarioService";
+import { UserRequestDTO, UserResponseDTO } from "@/modules/user/dto/userDto";
+import { postUsuario } from "@/modules/user/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
@@ -16,30 +13,30 @@ import {
   type RegisterOptions,
 } from "react-hook-form";
 
-type CadastroUsuarioForm = UsuarioRequestDTO & {
+type RegisterUserFormValues = UserRequestDTO & {
   confirmarSenha: string;
 };
 
-type RegisterFieldName = FieldPath<CadastroUsuarioForm>;
+type RegisterFieldName = FieldPath<RegisterUserFormValues>;
 
 type RegisterFieldRules<TName extends RegisterFieldName> = RegisterOptions<
-  CadastroUsuarioForm,
+  RegisterUserFormValues,
   TName
 >;
 
-interface UseCadastroUsuarioFormReturn {
-  cadastroUsuarioForm: UseFormReturn<CadastroUsuarioForm>;
+interface UseRegisterUserFormReturn {
+  registerUserForm: UseFormReturn<RegisterUserFormValues>;
   confirmarSenhaRules: RegisterFieldRules<"confirmarSenha">;
   emailRules: RegisterFieldRules<"email">;
   nomeRules: RegisterFieldRules<"nome">;
   senhaRules: RegisterFieldRules<"senha">;
-  criarUsuario(): void;
+  createUser(): void;
 }
 
-export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
+export function useRegisterUserForm(): UseRegisterUserFormReturn {
   const router = useRouter();
 
-  const cadastroUsuarioForm = useForm<CadastroUsuarioForm>({
+  const registerUserForm = useForm<RegisterUserFormValues>({
     mode: "onTouched",
     defaultValues: {
       nome: "",
@@ -50,19 +47,19 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
   });
 
   const mutationPostUsuario = useMutation<
-    UsuarioResponseDTO,
+    UserResponseDTO,
     ApiErrorResponse,
-    UsuarioRequestDTO
+    UserRequestDTO
   >({
     mutationFn: postUsuario,
     onSuccess: () => {
-      cadastroUsuarioForm.reset();
+      registerUserForm.reset();
 
       window.setTimeout(() => router.push("/login"), 1000);
     },
     onError: (error) => {
       error.errors.forEach((item) => {
-        cadastroUsuarioForm.setError(item.field as keyof CadastroUsuarioForm, {
+        registerUserForm.setError(item.field as keyof RegisterUserFormValues, {
           message: item.message,
         });
       });
@@ -70,7 +67,7 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
   });
 
   const senha = useWatch({
-    control: cadastroUsuarioForm.control,
+    control: registerUserForm.control,
     name: "senha",
     defaultValue: "",
   });
@@ -104,9 +101,9 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
     },
   };
 
-  function criarUsuario(): void {
-    cadastroUsuarioForm.handleSubmit(async ({ nome, email, senha }) => {
-      const payload: UsuarioRequestDTO = {
+  function createUser(): void {
+    registerUserForm.handleSubmit(async ({ nome, email, senha }) => {
+      const payload: UserRequestDTO = {
         nome,
         email,
         senha,
@@ -117,11 +114,11 @@ export function useCadastroUsuarioForm(): UseCadastroUsuarioFormReturn {
   }
 
   return {
-    cadastroUsuarioForm,
+    registerUserForm,
     confirmarSenhaRules,
     emailRules,
     nomeRules,
     senhaRules,
-    criarUsuario,
+    createUser,
   };
 }

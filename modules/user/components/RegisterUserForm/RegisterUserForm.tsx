@@ -1,34 +1,34 @@
 "use client";
-import { CardAutenticacao } from "@/components/CardAutenticacao";
+import { AuthCard } from "@/components/AuthCard";
 import { ControlledEmailField } from "@/components/ControlledEmailField";
 import { ControlledPasswordField } from "@/components/ControlledPasswordField";
 import { ControlledTextField } from "@/components/ControlledTextField";
-import { useCadastroUsuarioForm } from "@/modules/usuario/components/CadastroUsuarioForm/hooks/useCadastroUsuarioForm";
+import { useRegisterUserForm } from "@/modules/user/components/RegisterUserForm/hooks/useRegisterUserForm";
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { type ReactElement } from "react";
 
-export function CadastroUsuarioForm(): ReactElement {
+export function RegisterUserForm(): ReactElement {
   const {
-    cadastroUsuarioForm,
+    registerUserForm,
     confirmarSenhaRules,
     emailRules,
     nomeRules,
     senhaRules,
-    criarUsuario,
-  } = useCadastroUsuarioForm();
+    createUser,
+  } = useRegisterUserForm();
 
   return (
-    <CardAutenticacao
+    <AuthCard
       titulo="Criar conta"
       subtitulo="Use um e-mail válido e uma senha segura para começar a controlar o seu dinheiro."
     >
       <Stack spacing={2.5}>
         <ControlledTextField
           name="nome"
-          control={cadastroUsuarioForm.control}
+          control={registerUserForm.control}
           rules={nomeRules}
           label="Nome"
           placeholder="Seu nome"
@@ -37,7 +37,7 @@ export function CadastroUsuarioForm(): ReactElement {
 
         <ControlledEmailField
           name="email"
-          control={cadastroUsuarioForm.control}
+          control={registerUserForm.control}
           rules={emailRules}
           label="E-mail"
           placeholder="seu@email.com"
@@ -46,7 +46,7 @@ export function CadastroUsuarioForm(): ReactElement {
 
         <ControlledPasswordField
           name="senha"
-          control={cadastroUsuarioForm.control}
+          control={registerUserForm.control}
           rules={senhaRules}
           label="Senha"
           placeholder="Senha"
@@ -55,7 +55,7 @@ export function CadastroUsuarioForm(): ReactElement {
 
         <ControlledPasswordField
           name="confirmarSenha"
-          control={cadastroUsuarioForm.control}
+          control={registerUserForm.control}
           rules={confirmarSenhaRules}
           label="Confirmar Senha"
           placeholder="Repita a senha"
@@ -68,10 +68,10 @@ export function CadastroUsuarioForm(): ReactElement {
           fullWidth
           sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
           size="large"
-          disabled={cadastroUsuarioForm.formState.isSubmitting}
-          loading={cadastroUsuarioForm.formState.isSubmitting}
+          disabled={registerUserForm.formState.isSubmitting}
+          loading={registerUserForm.formState.isSubmitting}
           loadingPosition="center"
-          onClick={criarUsuario}
+          onClick={createUser}
         >
           Criar Conta
         </LoadingButton>
@@ -93,6 +93,6 @@ export function CadastroUsuarioForm(): ReactElement {
           Entrar
         </Link>
       </Typography>
-    </CardAutenticacao>
+    </AuthCard>
   );
 }

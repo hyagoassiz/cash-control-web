@@ -5,17 +5,17 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { ReactNode, type ReactElement } from "react";
 
-interface CardAutenticacaoProps {
+interface AuthCardProps {
   children: ReactNode;
   titulo: string;
   subtitulo: string;
 }
 
-export function CardAutenticacao({
+export function AuthCard({
   children,
   titulo,
   subtitulo,
-}: CardAutenticacaoProps): ReactElement {
+}: AuthCardProps): ReactElement {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper

@@ -1,6 +1,6 @@
 "use client";
 
-import { normalizarEmail } from "@/lib/strings/normalizarEmail";
+import { normalizeEmail } from "@/lib/strings/normalizeEmail";
 import { TextField, TextFieldProps } from "@mui/material";
 import {
   Control,
@@ -46,7 +46,7 @@ export function ControlledEmailField<T extends FieldValues>({
             textFieldProps.onKeyDown?.(event);
           }}
           onChange={(event) => {
-            field.onChange(normalizarEmail(event.target.value));
+            field.onChange(normalizeEmail(event.target.value));
           }}
         />
       )}

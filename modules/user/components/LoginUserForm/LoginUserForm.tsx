@@ -1,27 +1,26 @@
 "use client";
-import { CardAutenticacao } from "@/components/CardAutenticacao";
+import { AuthCard } from "@/components/AuthCard";
 import { ControlledEmailField } from "@/components/ControlledEmailField";
 import { ControlledPasswordField } from "@/components/ControlledPasswordField";
-import { useLoginUsuarioForm } from "@/modules/usuario/components/LoginUsuarioForm/hooks/useLoginUsuarioForm";
+import { useLoginUserForm } from "@/modules/user/components/LoginUserForm/hooks/useLoginUserForm";
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { type ReactElement } from "react";
 
-export function LoginUsuarioForm(): ReactElement {
-  const { loginUsuarioForm, emailRules, senhaRules, login } =
-    useLoginUsuarioForm();
+export function LoginUserForm(): ReactElement {
+  const { loginUserForm, emailRules, senhaRules, login } = useLoginUserForm();
 
   return (
-    <CardAutenticacao
+    <AuthCard
       titulo="Login"
       subtitulo="Entre com seu e-mail e senha para continuar."
     >
       <Stack spacing={2.5}>
         <ControlledEmailField
           name="email"
-          control={loginUsuarioForm.control}
+          control={loginUserForm.control}
           rules={emailRules}
           label="E-mail"
           placeholder="seu@email.com"
@@ -30,7 +29,7 @@ export function LoginUsuarioForm(): ReactElement {
 
         <ControlledPasswordField
           name="senha"
-          control={loginUsuarioForm.control}
+          control={loginUserForm.control}
           rules={senhaRules}
           label="Senha"
           placeholder="Senha"
@@ -43,8 +42,8 @@ export function LoginUsuarioForm(): ReactElement {
           fullWidth
           sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
           size="large"
-          disabled={loginUsuarioForm.formState.isSubmitting}
-          loading={loginUsuarioForm.formState.isSubmitting}
+          disabled={loginUserForm.formState.isSubmitting}
+          loading={loginUserForm.formState.isSubmitting}
           loadingPosition="center"
           onClick={login}
         >
@@ -59,7 +58,7 @@ export function LoginUsuarioForm(): ReactElement {
       >
         Ainda não possui uma conta?{" "}
         <Link
-          href="/cadastro"
+          href="/register"
           style={{
             color: "inherit",
             textDecoration: "none",
@@ -68,6 +67,6 @@ export function LoginUsuarioForm(): ReactElement {
           Criar conta
         </Link>
       </Typography>
-    </CardAutenticacao>
+    </AuthCard>
   );
 }

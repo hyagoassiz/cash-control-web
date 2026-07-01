@@ -1,6 +1,6 @@
 "use client";
 
-import { removerEspacos } from "@/lib/strings/removerEspacos";
+import { removeSpaces } from "@/lib/strings/removeSpaces";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   IconButton,
@@ -47,7 +47,7 @@ export function ControlledPasswordField<T extends FieldValues>({
           error={!!fieldState.error}
           helperText={fieldState.error?.message ?? ""}
           onChange={(event) => {
-            const valor = removerEspacos(event.target.value);
+            const valor = removeSpaces(event.target.value);
 
             field.onChange(valor);
 

@@ -1,12 +1,9 @@
 "use client";
 
 import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
-import {
-  LoginRequestDTO,
-  LoginResponseDTO,
-} from "@/modules/usuario/dto/loginDto";
-import { UsuarioRequestDTO } from "@/modules/usuario/dto/usuarioDto";
-import { postLoginUsuario } from "@/modules/usuario/services/usuarioService";
+import { LoginRequestDTO, LoginResponseDTO } from "@/modules/user/dto/loginDto";
+import { UserRequestDTO } from "@/modules/user/dto/userDto";
+import { postLoginUsuario } from "@/modules/user/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
@@ -16,28 +13,28 @@ import {
   type RegisterOptions,
 } from "react-hook-form";
 
-type LoginUsuarioForm = UsuarioRequestDTO & {
+type LoginUserFormValues = UserRequestDTO & {
   confirmarSenha: string;
 };
 
-type RegisterFieldName = FieldPath<LoginUsuarioForm>;
+type RegisterFieldName = FieldPath<LoginUserFormValues>;
 
 type RegisterFieldRules<TName extends RegisterFieldName> = RegisterOptions<
-  LoginUsuarioForm,
+  LoginUserFormValues,
   TName
 >;
 
-interface UseLoginUsuarioFormReturn {
-  loginUsuarioForm: UseFormReturn<LoginUsuarioForm>;
+interface UseLoginUserFormReturn {
+  loginUserForm: UseFormReturn<LoginUserFormValues>;
   emailRules: RegisterFieldRules<"email">;
   senhaRules: RegisterFieldRules<"senha">;
   login(): void;
 }
 
-export function useLoginUsuarioForm(): UseLoginUsuarioFormReturn {
+export function useLoginUserForm(): UseLoginUserFormReturn {
   const router = useRouter();
 
-  const loginUsuarioForm = useForm<LoginUsuarioForm>({
+  const loginUserForm = useForm<LoginUserFormValues>({
     mode: "onTouched",
     defaultValues: {
       email: "",
@@ -52,13 +49,13 @@ export function useLoginUsuarioForm(): UseLoginUsuarioFormReturn {
   >({
     mutationFn: postLoginUsuario,
     onSuccess: () => {
-      loginUsuarioForm.reset();
+      loginUserForm.reset();
 
       window.setTimeout(() => router.push("/login"), 1000);
     },
     onError: (error) => {
       error.errors.forEach((item) => {
-        loginUsuarioForm.setError(item.field as keyof LoginUsuarioForm, {
+        loginUserForm.setError(item.field as keyof LoginUserFormValues, {
           message: item.message,
         });
       });
@@ -78,7 +75,7 @@ export function useLoginUsuarioForm(): UseLoginUsuarioFormReturn {
   };
 
   function login(): void {
-    loginUsuarioForm.handleSubmit(async ({ email, senha }) => {
+    loginUserForm.handleSubmit(async ({ email, senha }) => {
       const payload: LoginRequestDTO = {
         email,
         senha,
@@ -89,7 +86,7 @@ export function useLoginUsuarioForm(): UseLoginUsuarioFormReturn {
   }
 
   return {
-    loginUsuarioForm,
+    loginUserForm,
     emailRules,
     senhaRules,
     login,
