@@ -10,12 +10,13 @@ import Link from "next/link";
 import { type ReactElement } from "react";
 
 export function LoginUserForm(): ReactElement {
-  const { loginUserForm, emailRules, senhaRules, login } = useLoginUserForm();
+  const { loginUserForm, emailRules, passwordRules, login } =
+    useLoginUserForm();
 
   return (
     <AuthCard
       titulo="Login"
-      subtitulo="Entre com seu e-mail e senha para continuar."
+      subtitulo="Entre com seu e-mail e password para continuar."
     >
       <Stack spacing={2.5}>
         <ControlledEmailField
@@ -28,9 +29,9 @@ export function LoginUserForm(): ReactElement {
         />
 
         <ControlledPasswordField
-          name="senha"
+          name="password"
           control={loginUserForm.control}
-          rules={senhaRules}
+          rules={passwordRules}
           label="Senha"
           placeholder="Senha"
           autoComplete="password"

@@ -13,25 +13,25 @@ import { type ReactElement } from "react";
 export function RegisterUserForm(): ReactElement {
   const {
     registerUserForm,
-    confirmarSenhaRules,
+    confirmPasswordRules,
     emailRules,
-    nomeRules,
-    senhaRules,
+    nameRules,
+    passwordRules,
     createUser,
   } = useRegisterUserForm();
 
   return (
     <AuthCard
       titulo="Criar conta"
-      subtitulo="Use um e-mail válido e uma senha segura para começar a controlar o seu dinheiro."
+      subtitulo="Use um e-mail válido e uma password segura para começar a controlar o seu dinheiro."
     >
       <Stack spacing={2.5}>
         <ControlledTextField
-          name="nome"
+          name="name"
           control={registerUserForm.control}
-          rules={nomeRules}
+          rules={nameRules}
           label="Nome"
-          placeholder="Seu nome"
+          placeholder="Seu name"
           autoComplete="name"
         />
 
@@ -45,20 +45,20 @@ export function RegisterUserForm(): ReactElement {
         />
 
         <ControlledPasswordField
-          name="senha"
+          name="password"
           control={registerUserForm.control}
-          rules={senhaRules}
+          rules={passwordRules}
           label="Senha"
           placeholder="Senha"
           autoComplete="password"
         />
 
         <ControlledPasswordField
-          name="confirmarSenha"
+          name="confirmPassword"
           control={registerUserForm.control}
-          rules={confirmarSenhaRules}
+          rules={confirmPasswordRules}
           label="Confirmar Senha"
-          placeholder="Repita a senha"
+          placeholder="Repita a password"
           autoComplete="new-password"
         />
 

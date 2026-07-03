@@ -3,7 +3,7 @@
 import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
 import { LoginRequestDTO, LoginResponseDTO } from "@/modules/user/dto/loginDto";
 import { UserRequestDTO } from "@/modules/user/dto/userDto";
-import { postLoginUsuario } from "@/modules/user/services/userService";
+import { postUserLogin } from "@/modules/user/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
@@ -14,7 +14,7 @@ import {
 } from "react-hook-form";
 
 type LoginUserFormValues = UserRequestDTO & {
-  confirmarSenha: string;
+  confirmPassword: string;
 };
 
 type RegisterFieldName = FieldPath<LoginUserFormValues>;
@@ -27,7 +27,7 @@ type RegisterFieldRules<TName extends RegisterFieldName> = RegisterOptions<
 interface UseLoginUserFormReturn {
   loginUserForm: UseFormReturn<LoginUserFormValues>;
   emailRules: RegisterFieldRules<"email">;
-  senhaRules: RegisterFieldRules<"senha">;
+  passwordRules: RegisterFieldRules<"password">;
   login(): void;
 }
 
@@ -38,7 +38,7 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     mode: "onTouched",
     defaultValues: {
       email: "",
-      senha: "",
+      password: "",
     },
   });
 
@@ -47,7 +47,7 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     ApiErrorResponse,
     LoginRequestDTO
   >({
-    mutationFn: postLoginUsuario,
+    mutationFn: postUserLogin,
     onSuccess: () => {
       loginUserForm.reset();
 
@@ -70,15 +70,15 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     },
   };
 
-  const senhaRules: RegisterFieldRules<"senha"> = {
+  const passwordRules: RegisterFieldRules<"password"> = {
     required: "Senha é obrigatória",
   };
 
   function login(): void {
-    loginUserForm.handleSubmit(async ({ email, senha }) => {
+    loginUserForm.handleSubmit(async ({ email, password }) => {
       const payload: LoginRequestDTO = {
         email,
-        senha,
+        password,
       };
 
       mutationPostLoginUsuario.mutate(payload);
@@ -88,7 +88,7 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
   return {
     loginUserForm,
     emailRules,
-    senhaRules,
+    passwordRules,
     login,
   };
 }

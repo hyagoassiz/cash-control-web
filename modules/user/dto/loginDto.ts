@@ -1,9 +1,9 @@
 export interface LoginRequestDTO {
   email: string;
-  senha: string;
+  password: string;
 }
 
 export interface LoginResponseDTO {
-  mensagem: string;
+  message: string;
   email: string;
 }

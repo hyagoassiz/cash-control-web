@@ -1,7 +1,7 @@
 export interface UserRequestDTO {
-  nome: string;
+  name: string;
   email: string;
-  senha: string;
+  password: string;
 }
 
-export type UserResponseDTO = Pick<UserRequestDTO, "nome" | "senha">;
+export type UserResponseDTO = Pick<UserRequestDTO, "name" | "password">;

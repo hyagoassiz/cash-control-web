@@ -61,7 +61,9 @@ export function ControlledPasswordField<T extends FieldValues>({
                   edge="end"
                   tabIndex={-1}
                   onClick={() => setMostrarSenha((valor) => !valor)}
-                  aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={
+                    mostrarSenha ? "Ocultar password" : "Mostrar password"
+                  }
                 >
                   {mostrarSenha ? <VisibilityOff /> : <Visibility />}
                 </IconButton>

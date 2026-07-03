@@ -2,7 +2,7 @@
 
 import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
 import { UserRequestDTO, UserResponseDTO } from "@/modules/user/dto/userDto";
-import { postUsuario } from "@/modules/user/services/userService";
+import { postUser } from "@/modules/user/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import {
@@ -14,7 +14,7 @@ import {
 } from "react-hook-form";
 
 type RegisterUserFormValues = UserRequestDTO & {
-  confirmarSenha: string;
+  confirmPassword: string;
 };
 
 type RegisterFieldName = FieldPath<RegisterUserFormValues>;
@@ -26,10 +26,10 @@ type RegisterFieldRules<TName extends RegisterFieldName> = RegisterOptions<
 
 interface UseRegisterUserFormReturn {
   registerUserForm: UseFormReturn<RegisterUserFormValues>;
-  confirmarSenhaRules: RegisterFieldRules<"confirmarSenha">;
+  confirmPasswordRules: RegisterFieldRules<"confirmPassword">;
   emailRules: RegisterFieldRules<"email">;
-  nomeRules: RegisterFieldRules<"nome">;
-  senhaRules: RegisterFieldRules<"senha">;
+  nameRules: RegisterFieldRules<"name">;
+  passwordRules: RegisterFieldRules<"password">;
   createUser(): void;
 }
 
@@ -39,10 +39,10 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
   const registerUserForm = useForm<RegisterUserFormValues>({
     mode: "onTouched",
     defaultValues: {
-      nome: "",
+      name: "",
       email: "",
-      senha: "",
-      confirmarSenha: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -51,7 +51,7 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
     ApiErrorResponse,
     UserRequestDTO
   >({
-    mutationFn: postUsuario,
+    mutationFn: postUser,
     onSuccess: () => {
       registerUserForm.reset();
 
@@ -66,13 +66,13 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
     },
   });
 
-  const senha = useWatch({
+  const password = useWatch({
     control: registerUserForm.control,
-    name: "senha",
+    name: "password",
     defaultValue: "",
   });
 
-  const nomeRules: RegisterFieldRules<"nome"> = {
+  const nameRules: RegisterFieldRules<"name"> = {
     required: "Nome é obrigatório",
     validate: {
       noEdges: (value) =>
@@ -90,23 +90,23 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
     },
   };
 
-  const senhaRules: RegisterFieldRules<"senha"> = {
+  const passwordRules: RegisterFieldRules<"password"> = {
     required: "Senha é obrigatória",
   };
 
-  const confirmarSenhaRules: RegisterFieldRules<"confirmarSenha"> = {
+  const confirmPasswordRules: RegisterFieldRules<"confirmPassword"> = {
     required: "Confirmar Senha é obrigatória",
     validate: {
-      matches: (value) => value === senha || "As senhas não conferem",
+      matches: (value) => value === password || "As senhas não conferem",
     },
   };
 
   function createUser(): void {
-    registerUserForm.handleSubmit(async ({ nome, email, senha }) => {
+    registerUserForm.handleSubmit(async ({ name, email, password }) => {
       const payload: UserRequestDTO = {
-        nome,
+        name,
         email,
-        senha,
+        password,
       };
 
       mutationPostUsuario.mutate(payload);
@@ -115,10 +115,10 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
 
   return {
     registerUserForm,
-    confirmarSenhaRules,
+    confirmPasswordRules,
     emailRules,
-    nomeRules,
-    senhaRules,
+    nameRules,
+    passwordRules,
     createUser,
   };
 }

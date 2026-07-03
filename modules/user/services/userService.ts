@@ -2,19 +2,19 @@ import { apiClient } from "@/lib/api/apiClient";
 import { LoginRequestDTO, LoginResponseDTO } from "@/modules/user/dto/loginDto";
 import { UserRequestDTO, UserResponseDTO } from "@/modules/user/dto/userDto";
 
-export async function postUsuario(
+export async function postUser(
   payload: UserRequestDTO,
 ): Promise<UserResponseDTO> {
-  return await apiClient("/usuarios", {
+  return await apiClient("/users", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
-export async function postLoginUsuario(
+export async function postUserLogin(
   payload: LoginRequestDTO,
 ): Promise<LoginResponseDTO> {
-  return await apiClient("/usuarios/login", {
+  return await apiClient("/users/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });
