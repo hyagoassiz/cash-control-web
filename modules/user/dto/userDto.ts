@@ -4,4 +4,4 @@ export interface UserRequestDTO {
   password: string;
 }
 
-export type UserResponseDTO = Pick<UserRequestDTO, "name" | "password">;
+export type UserResponseDTO = Pick<UserRequestDTO, "name" | "email">;

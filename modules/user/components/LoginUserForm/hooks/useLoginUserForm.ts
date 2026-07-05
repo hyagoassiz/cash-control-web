@@ -51,10 +51,10 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     onSuccess: () => {
       loginUserForm.reset();
 
-      window.setTimeout(() => router.push("/login"), 1000);
+      window.setTimeout(() => router.push("/dashboard"), 1000);
     },
     onError: (error) => {
-      error.errors.forEach((item) => {
+      error?.errors?.forEach((item) => {
         loginUserForm.setError(item.field as keyof LoginUserFormValues, {
           message: item.message,
         });

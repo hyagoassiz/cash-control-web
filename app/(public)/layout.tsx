@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-export default function LayoutPublico({
+export default function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

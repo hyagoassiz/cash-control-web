@@ -11,6 +11,12 @@ export async function postUser(
   });
 }
 
+export async function getMe(): Promise<UserResponseDTO> {
+  return await apiClient("/users/me", {
+    method: "GET",
+  });
+}
+
 export async function postUserLogin(
   payload: LoginRequestDTO,
 ): Promise<LoginResponseDTO> {
