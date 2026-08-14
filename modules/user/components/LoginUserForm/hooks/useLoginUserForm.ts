@@ -1,27 +1,27 @@
 "use client";
 
 import { ApiErrorResponse } from "@/lib/api/types/ApiErrorResponse";
+import {
+  LoginFormValues,
+  loginSchema,
+} from "@/modules/user/components/LoginUserForm/schema/loginSchema";
 import { LoginRequestDTO, LoginResponseDTO } from "@/modules/user/dto/loginDto";
-import { UserRequestDTO } from "@/modules/user/dto/userDto";
 import { postUserLogin } from "@/modules/user/services/userService";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm, UseFormReturn } from "react-hook-form";
 
-type LoginUserFormValues = UserRequestDTO & {
-  confirmPassword: string;
-  rememberEmail: boolean;
-};
-
 interface UseLoginUserFormReturn {
-  loginUserForm: UseFormReturn<LoginUserFormValues>;
+  loginUserForm: UseFormReturn<LoginFormValues>;
   login(): void;
 }
 
 export function useLoginUserForm(): UseLoginUserFormReturn {
   const router = useRouter();
 
-  const loginUserForm = useForm<LoginUserFormValues>({
+  const loginUserForm = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     mode: "onTouched",
     defaultValues: {
       email: "",
@@ -42,7 +42,7 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     },
     onError: (error) => {
       error?.errors?.forEach((item) => {
-        loginUserForm.setError(item.field as keyof LoginUserFormValues, {
+        loginUserForm.setError(item.field as keyof LoginFormValues, {
           message: item.message,
         });
       });

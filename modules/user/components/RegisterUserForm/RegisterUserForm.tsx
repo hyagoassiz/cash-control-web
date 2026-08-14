@@ -10,55 +10,48 @@ import Link from "next/link";
 import { type ReactElement } from "react";
 
 export function RegisterUserForm(): ReactElement {
-  const {
-    registerUserForm,
-    confirmPasswordRules,
-    emailRules,
-    nameRules,
-    passwordRules,
-    createUser,
-  } = useRegisterUserForm();
+  const { registerUserForm, createUser } = useRegisterUserForm();
 
   return (
     <AuthLayout titleRoute="Criar Conta" onKeyDown={createUser}>
       <ControlledTextField
         name="name"
         control={registerUserForm.control}
-        rules={nameRules}
         label="Nome"
         placeholder="Seu name"
         autoComplete="name"
         fullWidth
+        required
       />
 
       <ControlledEmailField
         name="email"
         control={registerUserForm.control}
-        rules={emailRules}
         label="E-mail"
         placeholder="seu@email.com"
         autoComplete="email"
         fullWidth
+        required
       />
 
       <ControlledPasswordField
         name="password"
         control={registerUserForm.control}
-        rules={passwordRules}
         label="Senha"
         placeholder="Senha"
         autoComplete="password"
         fullWidth
+        required
       />
 
       <ControlledPasswordField
         name="confirmPassword"
         control={registerUserForm.control}
-        rules={confirmPasswordRules}
         label="Confirmar Senha"
         placeholder="Repita a password"
         autoComplete="new-password"
         fullWidth
+        required
       />
 
       <LoadingButton

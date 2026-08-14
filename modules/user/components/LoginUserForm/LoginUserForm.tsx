@@ -22,6 +22,7 @@ export function LoginUserForm(): ReactElement {
         placeholder="seu@email.com"
         autoComplete="email"
         fullWidth
+        required
       />
 
       <ControlledPasswordField
@@ -31,6 +32,7 @@ export function LoginUserForm(): ReactElement {
         placeholder="Senha"
         autoComplete="password"
         fullWidth
+        required
       />
 
       <Controller
