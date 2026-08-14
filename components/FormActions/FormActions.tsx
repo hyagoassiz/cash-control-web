@@ -8,6 +8,7 @@ interface ActionButton {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   loading?: boolean;
+  size?: ButtonProps["size"];
   disabled?: boolean;
   variant?: ButtonProps["variant"];
   color?: ButtonProps["color"];
@@ -34,6 +35,7 @@ export const FormActions: React.FC<FormActionsProps> = ({ buttons }) => {
             loading={button.loading}
             disabled={button.disabled}
             onClick={button.onClick}
+            size={button.size}
           >
             {button.label}
           </LoadingButton>

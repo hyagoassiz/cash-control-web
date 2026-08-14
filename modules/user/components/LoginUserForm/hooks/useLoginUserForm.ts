@@ -6,28 +6,15 @@ import { UserRequestDTO } from "@/modules/user/dto/userDto";
 import { postUserLogin } from "@/modules/user/services/userService";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import {
-  useForm,
-  UseFormReturn,
-  type FieldPath,
-  type RegisterOptions,
-} from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 
 type LoginUserFormValues = UserRequestDTO & {
   confirmPassword: string;
+  rememberEmail: boolean;
 };
-
-type RegisterFieldName = FieldPath<LoginUserFormValues>;
-
-type RegisterFieldRules<TName extends RegisterFieldName> = RegisterOptions<
-  LoginUserFormValues,
-  TName
->;
 
 interface UseLoginUserFormReturn {
   loginUserForm: UseFormReturn<LoginUserFormValues>;
-  emailRules: RegisterFieldRules<"email">;
-  passwordRules: RegisterFieldRules<"password">;
   login(): void;
 }
 
@@ -62,18 +49,6 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     },
   });
 
-  const emailRules: RegisterFieldRules<"email"> = {
-    required: "E-mail é obrigatório",
-    validate: {
-      noEdges: (value) =>
-        value === value.trim() || "Não pode ter espaço no começo ou fim",
-    },
-  };
-
-  const passwordRules: RegisterFieldRules<"password"> = {
-    required: "Senha é obrigatória",
-  };
-
   function login(): void {
     loginUserForm.handleSubmit(async ({ email, password }) => {
       const payload: LoginRequestDTO = {
@@ -87,8 +62,6 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
 
   return {
     loginUserForm,
-    emailRules,
-    passwordRules,
     login,
   };
 }

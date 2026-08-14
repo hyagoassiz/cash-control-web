@@ -33,6 +33,7 @@ export function ControlledTextField<T extends FieldValues>({
         <TextField
           {...field}
           {...textFieldProps}
+          value={field.value ?? ""}
           error={!!fieldState.error}
           helperText={fieldState.error?.message ?? ""}
         />

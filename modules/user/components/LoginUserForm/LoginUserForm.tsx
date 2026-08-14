@@ -1,56 +1,67 @@
 "use client";
-import { AuthCard } from "@/components/AuthCard";
 import { ControlledEmailField } from "@/components/ControlledEmailField";
 import { ControlledPasswordField } from "@/components/ControlledPasswordField";
+import { AuthLayout } from "@/modules/user/components/AuthLayout";
 import { useLoginUserForm } from "@/modules/user/components/LoginUserForm/hooks/useLoginUserForm";
 import { LoadingButton } from "@mui/lab";
-import Stack from "@mui/material/Stack";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { type ReactElement } from "react";
+import { Controller } from "react-hook-form";
 
 export function LoginUserForm(): ReactElement {
-  const { loginUserForm, emailRules, passwordRules, login } =
-    useLoginUserForm();
+  const { loginUserForm, login } = useLoginUserForm();
 
   return (
-    <AuthCard
-      titulo="Login"
-      subtitulo="Entre com seu e-mail e password para continuar."
-    >
-      <Stack spacing={2.5}>
-        <ControlledEmailField
-          name="email"
-          control={loginUserForm.control}
-          rules={emailRules}
-          label="E-mail"
-          placeholder="seu@email.com"
-          autoComplete="email"
-        />
+    <AuthLayout titleRoute="Login" onKeyDown={login}>
+      <ControlledEmailField
+        name="email"
+        control={loginUserForm.control}
+        label="E-mail"
+        placeholder="seu@email.com"
+        autoComplete="email"
+        fullWidth
+      />
 
-        <ControlledPasswordField
-          name="password"
-          control={loginUserForm.control}
-          rules={passwordRules}
-          label="Senha"
-          placeholder="Senha"
-          autoComplete="password"
-        />
+      <ControlledPasswordField
+        name="password"
+        control={loginUserForm.control}
+        label="Senha"
+        placeholder="Senha"
+        autoComplete="password"
+        fullWidth
+      />
 
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
-          size="large"
-          disabled={loginUserForm.formState.isSubmitting}
-          loading={loginUserForm.formState.isSubmitting}
-          loadingPosition="center"
-          onClick={login}
-        >
-          Entrar
-        </LoadingButton>
-      </Stack>
+      <Controller
+        name="rememberEmail"
+        control={loginUserForm.control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={field.value ?? false}
+                onChange={(e) => field.onChange(e.target.checked)}
+              />
+            }
+            label="Lembrar de mim"
+          />
+        )}
+      />
+
+      <LoadingButton
+        type="submit"
+        variant="contained"
+        fullWidth
+        sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
+        size="large"
+        disabled={loginUserForm.formState.isSubmitting}
+        loading={loginUserForm.formState.isSubmitting}
+        loadingPosition="center"
+        onClick={login}
+      >
+        Entrar
+      </LoadingButton>
 
       <Typography
         variant="body2"
@@ -68,6 +79,6 @@ export function LoginUserForm(): ReactElement {
           Criar conta
         </Link>
       </Typography>
-    </AuthCard>
+    </AuthLayout>
   );
 }

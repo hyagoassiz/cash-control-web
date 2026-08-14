@@ -1,10 +1,8 @@
 "use client";
-import { getMe } from "@/modules/user/services/userService";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LeftDrawer, { DrawerGroup } from "../../components/LeftDrawer";
 
 export default function ProtectedLayout({
@@ -13,6 +11,7 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
+
   const [open, setOpen] = useState(false);
 
   const groups: DrawerGroup[] = [
@@ -33,40 +32,42 @@ export default function ProtectedLayout({
     },
   ];
 
-  const {
-    data: user,
-    isPending,
-    error,
-  } = useQuery({
-    queryKey: ["me"],
-    queryFn: getMe,
-  });
+  // const {
+  //   data: user,
+  //   isPending,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["me"],
+  //   queryFn: getMe,
+  //   refetchInterval: false,
+  //   retry: false,
+  // });
 
-  useEffect(() => {
-    if (error) {
-      router.replace("/login");
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     router.replace("/login");
+  //   }
+  // }, [error]);
 
-  if (isPending) {
-    return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          py: 5,
-          px: 2,
-          bgcolor: "#f7f8fc",
-        }}
-      >
-        <Box sx={{ width: "100%", maxWidth: 400 }}>
-          <p>Carregando...</p>
-        </Box>
-      </Box>
-    );
-  }
+  // if (isPending) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         minHeight: "100vh",
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //         py: 5,
+  //         px: 2,
+  //         bgcolor: "#f7f8fc",
+  //       }}
+  //     >
+  //       <Box sx={{ width: "100%", maxWidth: 400 }}>
+  //         <p>Carregando...</p>
+  //       </Box>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <>
