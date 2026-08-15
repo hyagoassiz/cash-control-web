@@ -4,7 +4,7 @@ import { ControlledPasswordField } from "@/components/ControlledPasswordField";
 import { AuthLayout } from "@/modules/user/components/AuthLayout";
 import { useLoginUserForm } from "@/modules/user/components/LoginUserForm/hooks/useLoginUserForm";
 import { LoadingButton } from "@mui/lab";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, Divider, FormControlLabel } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { type ReactElement } from "react";
@@ -19,7 +19,7 @@ export function LoginUserForm(): ReactElement {
         name="email"
         control={loginUserForm.control}
         label="E-mail"
-        placeholder="seu@email.com"
+        placeholder="seu-email@email.com"
         autoComplete="email"
         fullWidth
         required
@@ -65,6 +65,8 @@ export function LoginUserForm(): ReactElement {
         Entrar
       </LoadingButton>
 
+      <Divider sx={{ width: "100%", height: "1px", marginTop: "20px" }} />
+
       <Typography
         variant="body2"
         color="text.secondary"
@@ -75,7 +77,6 @@ export function LoginUserForm(): ReactElement {
           href="/register"
           style={{
             color: "inherit",
-            textDecoration: "none",
           }}
         >
           Criar conta

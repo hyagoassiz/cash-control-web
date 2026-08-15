@@ -22,10 +22,12 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
 
   const loginUserForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    mode: "onTouched",
+    mode: "onSubmit",
+    reValidateMode: "onChange",
     defaultValues: {
       email: "",
       password: "",
+      rememberEmail: false,
     },
   });
 

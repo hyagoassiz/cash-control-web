@@ -5,6 +5,7 @@ import { ControlledTextField } from "@/components/ControlledTextField";
 import { AuthLayout } from "@/modules/user/components/AuthLayout";
 import { useRegisterUserForm } from "@/modules/user/components/RegisterUserForm/hooks/useRegisterUserForm";
 import { LoadingButton } from "@mui/lab";
+import { Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { type ReactElement } from "react";
@@ -68,6 +69,8 @@ export function RegisterUserForm(): ReactElement {
         Criar Conta
       </LoadingButton>
 
+      <Divider sx={{ width: "100%", height: "1px", marginTop: "20px" }} />
+
       <Typography
         variant="body2"
         color="text.secondary"
@@ -78,7 +81,6 @@ export function RegisterUserForm(): ReactElement {
           href="/login"
           style={{
             color: "inherit",
-            textDecoration: "none",
           }}
         >
           Entrar
