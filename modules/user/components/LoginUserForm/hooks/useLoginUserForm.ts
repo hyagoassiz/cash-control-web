@@ -5,14 +5,18 @@ import {
   LoginFormValues,
   loginSchema,
 } from "@/modules/user/components/LoginUserForm/schema/loginSchema";
-import { LoginRequestDTO, LoginResponseDTO } from "@/modules/user/dto/loginDto";
 import { postUserLogin } from "@/modules/user/services/userService";
+import {
+  UserLoginRequestDTO,
+  UserLoginResponseDTO,
+} from "@/modules/user/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm, UseFormReturn } from "react-hook-form";
 
 interface UseLoginUserFormReturn {
+  isLoading: boolean;
   loginUserForm: UseFormReturn<LoginFormValues>;
   login(): void;
 }
@@ -31,10 +35,10 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
     },
   });
 
-  const mutationPostLoginUsuario = useMutation<
-    LoginResponseDTO,
+  const { mutate, isPending } = useMutation<
+    UserLoginResponseDTO,
     ApiErrorResponse,
-    LoginRequestDTO
+    UserLoginRequestDTO
   >({
     mutationFn: postUserLogin,
     onSuccess: () => {
@@ -53,16 +57,17 @@ export function useLoginUserForm(): UseLoginUserFormReturn {
 
   function login(): void {
     loginUserForm.handleSubmit(async ({ email, password }) => {
-      const payload: LoginRequestDTO = {
+      const payload: UserLoginRequestDTO = {
         email,
         password,
       };
 
-      mutationPostLoginUsuario.mutate(payload);
+      mutate(payload);
     })();
   }
 
   return {
+    isLoading: isPending,
     loginUserForm,
     login,
   };

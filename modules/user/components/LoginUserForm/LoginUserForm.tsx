@@ -1,20 +1,18 @@
 "use client";
 import { ControlledEmailField } from "@/components/ControlledEmailField";
 import { ControlledPasswordField } from "@/components/ControlledPasswordField";
+import AuthActions from "@/modules/user/components/AuthActions/AuthActions";
 import { AuthLayout } from "@/modules/user/components/AuthLayout";
 import { useLoginUserForm } from "@/modules/user/components/LoginUserForm/hooks/useLoginUserForm";
-import { LoadingButton } from "@mui/lab";
-import { Checkbox, Divider, FormControlLabel } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { type ReactElement } from "react";
 import { Controller } from "react-hook-form";
 
 export function LoginUserForm(): ReactElement {
-  const { loginUserForm, login } = useLoginUserForm();
+  const { isLoading, loginUserForm, login } = useLoginUserForm();
 
   return (
-    <AuthLayout titleRoute="Login" onKeyDown={login}>
+    <AuthLayout titleRoute="Login">
       <ControlledEmailField
         name="email"
         control={loginUserForm.control}
@@ -51,37 +49,14 @@ export function LoginUserForm(): ReactElement {
         )}
       />
 
-      <LoadingButton
-        type="submit"
-        variant="contained"
-        fullWidth
-        sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
-        size="large"
-        disabled={loginUserForm.formState.isSubmitting}
-        loading={loginUserForm.formState.isSubmitting}
-        loadingPosition="center"
+      <AuthActions
+        linkHref="/register"
+        isLoading={isLoading}
+        buttonLabel="Entrar"
+        linkLabel="Criar conta"
+        linkDescription="Ainda não possui uma conta?"
         onClick={login}
-      >
-        Entrar
-      </LoadingButton>
-
-      <Divider sx={{ width: "100%", height: "1px", marginTop: "20px" }} />
-
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ mt: 3, textAlign: "center" }}
-      >
-        Ainda não possui uma conta?{" "}
-        <Link
-          href="/register"
-          style={{
-            color: "inherit",
-          }}
-        >
-          Criar conta
-        </Link>
-      </Typography>
+      />
     </AuthLayout>
   );
 }

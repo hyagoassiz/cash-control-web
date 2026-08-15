@@ -2,24 +2,21 @@
 import { ControlledEmailField } from "@/components/ControlledEmailField";
 import { ControlledPasswordField } from "@/components/ControlledPasswordField";
 import { ControlledTextField } from "@/components/ControlledTextField";
+import AuthActions from "@/modules/user/components/AuthActions/AuthActions";
 import { AuthLayout } from "@/modules/user/components/AuthLayout";
 import { useRegisterUserForm } from "@/modules/user/components/RegisterUserForm/hooks/useRegisterUserForm";
-import { LoadingButton } from "@mui/lab";
-import { Divider } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
 import { type ReactElement } from "react";
 
 export function RegisterUserForm(): ReactElement {
   const { registerUserForm, createUser } = useRegisterUserForm();
 
   return (
-    <AuthLayout titleRoute="Criar Conta" onKeyDown={createUser}>
+    <AuthLayout titleRoute="Criar Conta">
       <ControlledTextField
         name="name"
         control={registerUserForm.control}
         label="Nome"
-        placeholder="Seu name"
+        placeholder="Seu nome"
         autoComplete="name"
         fullWidth
         required
@@ -55,37 +52,14 @@ export function RegisterUserForm(): ReactElement {
         required
       />
 
-      <LoadingButton
-        type="submit"
-        variant="contained"
-        fullWidth
-        sx={{ mt: 1, py: 1.5, textTransform: "none", fontWeight: 700 }}
-        size="large"
-        disabled={registerUserForm.formState.isSubmitting}
-        loading={registerUserForm.formState.isSubmitting}
-        loadingPosition="center"
+      <AuthActions
+        linkHref="/login"
+        isLoading={registerUserForm.formState.isSubmitting}
+        buttonLabel="Criar Conta"
+        linkLabel="Entrar"
+        linkDescription="Já possui uma conta?"
         onClick={createUser}
-      >
-        Criar Conta
-      </LoadingButton>
-
-      <Divider sx={{ width: "100%", height: "1px", marginTop: "20px" }} />
-
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ mt: 3, textAlign: "center" }}
-      >
-        Já possui uma conta?{" "}
-        <Link
-          href="/login"
-          style={{
-            color: "inherit",
-          }}
-        >
-          Entrar
-        </Link>
-      </Typography>
+      />
     </AuthLayout>
   );
 }

@@ -5,14 +5,17 @@ import {
   RegisterFormValues,
   registerSchema,
 } from "@/modules/user/components/RegisterUserForm/schema/registerSchema";
-import { UserRequestDTO, UserResponseDTO } from "@/modules/user/dto/userDto";
 import { postUser } from "@/modules/user/services/userService";
+import {
+  CreateUserRequestDTO,
+  UserResponseDTO,
+} from "@/modules/user/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm, UseFormReturn } from "react-hook-form";
 
-type RegisterUserFormValues = UserRequestDTO & {
+type RegisterUserFormValues = CreateUserRequestDTO & {
   confirmPassword: string;
 };
 
@@ -37,7 +40,7 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
   const mutationPostUsuario = useMutation<
     UserResponseDTO,
     ApiErrorResponse,
-    UserRequestDTO
+    CreateUserRequestDTO
   >({
     mutationFn: postUser,
     onSuccess: () => {
@@ -56,7 +59,7 @@ export function useRegisterUserForm(): UseRegisterUserFormReturn {
 
   function createUser(): void {
     registerUserForm.handleSubmit(async ({ name, email, password }) => {
-      const payload: UserRequestDTO = {
+      const payload: CreateUserRequestDTO = {
         name,
         email,
         password,
